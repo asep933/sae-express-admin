@@ -5,11 +5,11 @@ window.$ = $;
 import "@fortawesome/fontawesome-free/css/all.css";
 import "bootstrap";
 
-import DataTable from 'datatables.net-bs4';
-import 'datatables.net-bs4/css/dataTables.bootstrap4.min.css';
-import 'datatables.net-responsive-bs4';
-import 'datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css';
-import 'datatables.net-staterestore-bs4';
+import DataTable from "datatables.net-bs4";
+import "datatables.net-bs4/css/dataTables.bootstrap4.min.css";
+import "datatables.net-responsive-bs4";
+import "datatables.net-responsive-bs4/css/responsive.bootstrap4.min.css";
+import "datatables.net-staterestore-bs4";
 
 import "./adminlte3";
 import "./bootstrap";
@@ -35,16 +35,23 @@ $(document).ready(function () {
         let tableConfigs = defaultDataTables.dataset.configs;
 
         const reloadDeleteModal = () => {
-            const deleteButtons = document.querySelectorAll("button.delete-btn");
+            const deleteButtons =
+                document.querySelectorAll("button.delete-btn");
 
             deleteButtons.forEach((deleteButton) => {
-                deleteButton.addEventListener("click", (e) => {
+                $(defaultDataTables).on(
+                    "click",
+                    ".container-delete-btn",
+                    function (e) {
+                        const destroyUrl =
+                            deleteButton.getAttribute("data-destroy");
+                        const deleteForm =
+                            document.querySelector("div#delete-form");
+                        const csrfToken = document
+                            .querySelector('meta[name="csrf-token"]')
+                            .getAttribute("content");
 
-                    const destroyUrl = deleteButton.getAttribute("data-destroy");
-                    const deleteForm = document.querySelector("div#delete-form");
-                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
-
-                    let form = `
+                        let form = `
                     <form action="${destroyUrl}" method="POST">
                         <input type="hidden" name="_method" value="DELETE">
                         <input type="hidden" name="_token" value="${csrfToken}" autocomplete="off">
@@ -64,16 +71,24 @@ $(document).ready(function () {
                     </form>
                     `;
 
-                   deleteForm.innerHTML = form;
+                        deleteForm.innerHTML = form;
 
-                    $('div#delete-modal').modal({show: true, focus: true, keyboard: false, backdrop: 'static'});
-
-                    document.querySelectorAll('.dismiss-modal').forEach((element) => {
-                        element.addEventListener("click", () => {
-                            $('div#delete-modal').modal('hide');
+                        $("div#delete-modal").modal({
+                            show: true,
+                            focus: true,
+                            keyboard: false,
+                            backdrop: "static",
                         });
-                    });
-                });
+
+                        document
+                            .querySelectorAll(".dismiss-modal")
+                            .forEach((element) => {
+                                element.addEventListener("click", () => {
+                                    $("div#delete-modal").modal("hide");
+                                });
+                            });
+                    }
+                );
             });
         };
 
@@ -92,4 +107,29 @@ $(document).ready(function () {
             },
         });
     }
+});
+
+// Fungsi untuk menghitung volumetric weight
+function calculateVolumetric() {
+    const height = parseFloat(document.getElementById("height").value) || 0;
+    const width = parseFloat(document.getElementById("width").value) || 0;
+    const length = parseFloat(document.getElementById("length").value) || 0;
+    const actualWeight =
+        parseFloat(document.getElementById("weight").value) || 0;
+
+    // Rumus volumetric weight
+    const volumetric = (height * width * length) / 5000;
+
+    // Tentukan chargeable weight
+    const chargeableWeight = Math.max(volumetric, actualWeight);
+
+    // Update field readonly
+    document.getElementById("volumetric").value = volumetric.toFixed(2);
+    document.getElementById("chargeable_weight").value =
+        chargeableWeight.toFixed(2);
+}
+
+// Tambahkan event listener pada input dimensi dan berat
+document.querySelectorAll(".dimension, #weight").forEach((input) => {
+    input.addEventListener("input", calculateVolumetric);
 });

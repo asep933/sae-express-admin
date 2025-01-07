@@ -1,1 +1,39 @@
-@import './adminlte3.css';
+@import "./adminlte3.css";
+
+.timeline {
+    position: relative;
+    padding: 20px 0;
+}
+
+.timeline-item {
+    position: relative;
+    margin-bottom: 20px;
+    padding-left: 40px;
+}
+
+.timeline-row {
+    display: flex;
+    align-items: center;
+}
+
+.timeline-point {
+    font-size: 20px;
+    margin-right: 10px;
+}
+
+.timeline-content {
+    background-color: #f8f9fa;
+    padding: 15px;
+    border-radius: 5px;
+    flex-grow: 1;
+    word-wrap: break-word;
+}
+
+.timeline-title {
+    font-weight: bold;
+    margin-bottom: 0;
+}
+
+.timeline-content p {
+    margin-bottom: 0;
+}

@@ -15,8 +15,8 @@ class DatabaseSeeder extends Seeder
         DB::transaction(function () {
             \App\Models\User::create([
                 'name' => 'Administrator',
-                'email' => 'admin@local.test',
-                'password' => Hash::make('password'),
+                'email' => 'sae.express.wanguk@gmail.com',
+                'password' => Hash::make('saeexpress@123#'),
                 'email_verified_at' => Carbon::now()
             ]);
 

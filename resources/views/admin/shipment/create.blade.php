@@ -10,10 +10,10 @@
                 <h3 class="card-title">Add a new User form</h3>
             </div>
             <div class="card-body">
-                <form action="{{ route('admin.users.store') }}" method="POST">
+                <form action="{{ route('admin.shipment.store') }}" method="POST">
                     @csrf
 
-                    @include('admin.users._form')
+                    @include('admin.shipment._form')
 
                     <div class="form-group">
                         <label for="password">{{ __('Password*') }}</label>
@@ -36,10 +36,10 @@
                     </div>
 
                     <div class="form-group">
-                        @permission('users.create')
+                        @permission('shipment.create')
                         <button type="submit" class="btn btn-primary mr-2">{{ __('Save') }}</button>
                         @endpermission
-                        <a href="{{ route('admin.users.index') }}" class="btn btn-default"
+                        <a href="{{ route('admin.shipment.store') }}" class="btn btn-default"
                             role="button">{{ __('Cancel') }}</a>
                     </div>
 

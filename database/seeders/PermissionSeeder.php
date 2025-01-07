@@ -15,6 +15,8 @@ class PermissionSeeder extends Seeder
     ];
 
     private const DEFAULT_CRUD_RESOURCES = [
+        'shipment',
+        'trackings',
         'roles',
         'permissions',
         'users',
