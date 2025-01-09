@@ -102,6 +102,44 @@ $(document).ready(function () {
             info: true,
             ajax: datatablesSource,
             columns: JSON.parse(tableConfigs),
+            // initComplete: function (settings, json) {
+            //     // Add select filter for created_at
+            //     $("#dataTable_length").append("<label>&nbsp; Filter:</label>");
+            //     $("#dataTable_length").append(
+            //         '<select class="form-control input-sm" id="created_at_filter"></select>'
+            //     );
+
+            //     // Populate filter with options
+            //     let createdAtFilter = [
+            //         { value: "", text: "All Dates" },
+            //         { value: "2023-01-01", text: "2023-01-01" },
+            //         { value: "2023-01-02", text: "2023-01-02" }, // Add dynamic dates based on available data
+            //     ];
+
+            //     for (var i = 0; i < createdAtFilter.length; i++) {
+            //         $("#created_at_filter").append(
+            //             '<option value="' +
+            //                 createdAtFilter[i].value +
+            //                 '">' +
+            //                 createdAtFilter[i].text +
+            //                 "</option>"
+            //         );
+            //     }
+
+            //     // Filter results on select change
+            //     $("#created_at_filter").on("change", function () {
+            //         oTable.columns(3).search($(this).val()).draw(); // Assuming `created_at` is column index 3
+            //     });
+
+            //     // Add custom styling for select input
+            //     $("#created_at_filter").css("width", "auto"); // Optional: adjust width if necessary
+            // },
+            // initComplete: function (settings, json) {
+            //     // Filter results on select change
+            //     $("#filter-created-at").on("change", function () {
+            //         oTable.columns(3).search($(this).val()).draw(); // Assuming `created_at` is column index 3
+            //     });
+            // },
             drawCallback: function () {
                 reloadDeleteModal();
             },
@@ -117,19 +155,15 @@ function calculateVolumetric() {
     const actualWeight =
         parseFloat(document.getElementById("weight").value) || 0;
 
-    // Rumus volumetric weight
     const volumetric = (height * width * length) / 5000;
 
-    // Tentukan chargeable weight
     const chargeableWeight = Math.max(volumetric, actualWeight);
 
-    // Update field readonly
     document.getElementById("volumetric").value = volumetric.toFixed(2);
     document.getElementById("chargeable_weight").value =
         chargeableWeight.toFixed(2);
 }
 
-// Tambahkan event listener pada input dimensi dan berat
 document.querySelectorAll(".dimension, #weight").forEach((input) => {
     input.addEventListener("input", calculateVolumetric);
 });

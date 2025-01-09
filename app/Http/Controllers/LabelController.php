@@ -2,26 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Sender;
-use App\Models\Receiver;
+use Illuminate\Http\Request;
 use App\Models\Shipment;
-use App\Models\Tracking;
-use Illuminate\Support\Facades\App;
 use Picqer\Barcode\Types\TypeCode128;
 use Picqer\Barcode\Renderers\HtmlRenderer;
+use Illuminate\Support\Facades\App;
 
-class ShippingController extends Controller
+class LabelController extends Controller
 {
-    public function index()
+    public function editLabel(Shipment $shipment)
     {
-        validate_permission('shipment.read');
-        return view('admin.shipment.index');
+        return view('admin.label.edit', compact('shipment'));
     }
 
-    public function store()
+    public function printLabel(Shipment $shipment)
     {
-        validate_permission('shipment.create');
-
         $data = request()->validate([
             'sender_name' => 'required|string',
             'sender_street_address' => 'required|string',
@@ -47,59 +42,7 @@ class ShippingController extends Controller
             'length' => 'required|numeric|min:0.1',
         ]);
 
-        // Generate nomor AWB
-        $awbNumber = $this->generateAWBNumber();
-
-        // Simpan data pelacakan
-        $tracking = Tracking::create([
-            'awb_number' => $awbNumber,
-            'status' => 'Barang dikemas',
-        ]);
-
-        // Buat atau cari pengirim
-        $sender = Sender::firstOrCreate(
-            [
-                'tracking_id' => $tracking->id,
-                'name' => $data['sender_name'],
-            ],
-            [
-                'street_address' => $data['sender_street_address'],
-                'city' => $data['sender_city'],
-                'postal_code' => $data['sender_postal_code'],
-                'country' => $data['sender_country'],
-                'no_handphone' => $data['sender_no_handphone'],
-            ]
-        );
-
-        // Buat atau cari penerima
-        $receiver = Receiver::firstOrCreate(
-            [
-                'tracking_id' => $tracking->id,
-                'name' => $data['receiver_name'],
-            ],
-            [
-                'street_address' => $data['receiver_street_address'],
-                'city' => $data['receiver_city'],
-                'state' => $data['receiver_state'],
-                'postal_code' => $data['receiver_postal_code'],
-                'country' => $data['receiver_country'],
-                'no_handphone' => $data['receiver_no_handphone'],
-            ]
-        );
-
-        // Simpan pengiriman
-        $shipment = Shipment::create([
-            'tracking_id' => $tracking->id,
-            'sender_id' => $sender->id,
-            'receiver_id' => $receiver->id,
-            'type' => $data['type'],
-            'package_description' => $data['package_description'],
-            'weight' => $data['weight'] > $data['chargeable_weight'] ? $data['weight'] : $data['chargeable_weight'],
-            'quantity' => $data['quantity'],
-            'height' => $data['height'],
-            'width' => $data['width'],
-            'length' => $data['length'],
-        ]);
+        $awbNumber = $shipment->tracking->awb_number;
 
         // Generate PDF label pengiriman
         $html = $this->generateShippingLabelHTML($data, $shipment, $awbNumber);
@@ -111,13 +54,6 @@ class ShippingController extends Controller
         $pdf->render();
         return $pdf->stream('shipping_label.pdf');
     }
-
-
-    private function generateAWBNumber()
-    {
-        return str_pad(random_int(0, 9999999999), 10, '0', STR_PAD_LEFT);
-    }
-
 
     private function generateShippingLabelHTML($data, $shipment, $awbNumber)
     {

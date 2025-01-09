@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ShippingController;
 use App\Http\Controllers\TrackingController;
+use App\Http\Controllers\LabelController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,7 +27,12 @@ Route::group(['middleware' => ['auth']], function () {
         Route::resource('permissions', PermissionController::class)->except(['show']);
         Route::resource('tracking', TrackingController::class)->except(['store']);
         Route::resource('users', UserController::class);
+        Route::get('/label-edit/{shipment}/edit', [LabelController::class, 'editLabel'])->name('label.edit');
+        Route::post('/label-print/{shipment}', [LabelController::class, 'printLabel'])->name('label.print');
     });
+
+    Route::get('/filter-index/{month}', [DashboardController::class, 'filterIndex'])->name('filter.index');
+    Route::post('/filter-process', [DashboardController::class, 'filterProcess'])->name('filter.process');
 
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');

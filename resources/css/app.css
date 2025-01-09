@@ -37,3 +37,9 @@
 .timeline-content p {
     margin-bottom: 0;
 }
+
+#dataTable_length select {
+    width: auto;
+    display: inline-block;
+    margin-left: 10px;
+}

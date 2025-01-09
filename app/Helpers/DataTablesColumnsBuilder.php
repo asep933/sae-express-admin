@@ -78,7 +78,7 @@ class DataTablesColumnsBuilder
 
         $tableName = (new $this->model)->getTable();
         $tableColumns = DB::getSchemaBuilder()->getColumnListing($tableName);
-        $tableColumns = array_filter($tableColumns, fn ($value) => !in_array($value, $this->excludedColumns));
+        $tableColumns = array_filter($tableColumns, fn($value) => !in_array($value, $this->excludedColumns));
         $tableColumns = array_values($tableColumns);
 
         for ($i = 0; $i < count($tableColumns); $i++) {

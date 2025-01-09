@@ -47,29 +47,19 @@
             <div class="card-body">
                 <ul class="list-group mb-4">
                     <li class="list-group-item">
-                        <strong>Pengirim:</strong><br>
-                        <ul>
-                            <li><strong>Nama:</strong> {{ $tracking->shipment->sender->name }}</li>
-                            <li><strong>Alamat:</strong> {{ $tracking->shipment->sender->street_address }}</li>
-                            <li><strong>Negara:</strong> {{ $tracking->shipment->sender->country }}</li>
-                        </ul>
+                        <strong>Pengirim: </strong><span>{{ $tracking->shipment->sender->name }}</span><br>
                     </li>
 
                     <li class="list-group-item">
-                        <strong>Penerima:</strong><br>
-                        <ul>
-                            <li><strong>Nama:</strong> {{ $tracking->shipment->receiver->name }}</li>
-                            <li><strong>Alamat:</strong> {{ $tracking->shipment->receiver->street_address }}</li>
-                            <li><strong>Kota:</strong> {{ $tracking->shipment->receiver->city }}</li>
-                            <li><strong>Negara:</strong> {{ $tracking->shipment->receiver->country }}</li>
-                            <li><strong>Negara Bagian:</strong> {{ $tracking->shipment->receiver->state }}</li>
-                            <li><strong>Kode Pos:</strong> {{ $tracking->shipment->receiver->postal_code }}</li>
-                        </ul>
+                        <strong>Penerima: </strong><span>{{ $tracking->shipment->receiver->name }}</span><br>
                     </li>
 
                     <li class="list-group-item">
-                        <strong>Deskripsi Paket:</strong> {{ $tracking->shipment->package_description }}<br>
-                        <strong>Berat:</strong> {{ $tracking->shipment->weight }} g
+                        <strong>Nomor Resi: </strong><span>{{ $tracking->awb_number }}</span><br>
+                    </li>
+
+                    <li class="list-group-item">
+                        <strong>Tujuan: </strong><span>{{ $tracking->shipment->receiver->country }}</span><br>
                     </li>
                 </ul>
 
@@ -77,7 +67,6 @@
 
                 <div class="card-body">
                     <ul class="list-group">
-                        <li class="list-group-item"><strong>Nomor Resi:</strong> {{ $tracking->awb_number }}</li>
                         <li class="list-group-item"><strong>Status:</strong>
                             <span class="badge badge-{{ $tracking->status == 'Delivered' ? 'success' : 'warning' }}">
                                 {{ $tracking->status }}

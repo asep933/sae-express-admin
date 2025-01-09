@@ -10,11 +10,11 @@ class Shipment extends Model
     use HasFactory;
 
     protected $fillable = [
+        'package_description',
         'tracking_id',
         'sender_id',
         'receiver_id',
         'type',
-        'package_description',
         'weight',
         'quantity',
         'height',
