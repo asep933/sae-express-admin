@@ -15,6 +15,8 @@ class DashboardController extends Controller
 {
     public function index(Request $request)
     {
+        validate_permission('dashboard.read');
+
         $user = auth()->user();
 
         $driver = DB::getDriverName();
@@ -23,7 +25,6 @@ class DashboardController extends Controller
             : "DATE_FORMAT(created_at, '%Y-%m')"; // MySQL format
 
 
-        // Ambil bulan unik dari kolom created_at
         $uniqueMonths = Tracking::select(DB::raw("$dateFormat as month"))
             ->groupBy('month')
             ->orderBy('month', 'desc')

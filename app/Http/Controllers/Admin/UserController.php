@@ -37,7 +37,9 @@ class UserController extends Controller
                                 <a href="{{ route(\'admin.users.edit\', $row) }}" class="btn btn-default">Update</a>
                             @endpermission
                             @permission(\'users.delete\')
-                                <button type="button" class="btn btn-danger delete-btn" data-destroy="{{ route(\'admin.users.destroy\', $row) }}">Delete</button>
+                                <div class="container-delete-btn">
+                                    <button type="button" class="btn btn-danger delete-btn" data-destroy="{{ route(\'admin.users.destroy\', $row) }}">Delete</button>
+                                </div>
                             @endpermission
                         </div>
                     ', ['row' => $row]);

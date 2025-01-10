@@ -24,8 +24,14 @@ class DatabaseSeeder extends Seeder
             \App\Models\Role::create([
                 'name' => 'administrator'
             ]);
+
+            \App\Models\Role::create([
+                'name' => 'agen'
+            ]);
         });
 
         $this->call(PermissionSeeder::class);
+        $this->call(RolePermissionSeeder::class);
+        $this->call(RoleUserSeeder::class);
     }
 }

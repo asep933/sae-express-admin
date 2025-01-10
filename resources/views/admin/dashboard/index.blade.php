@@ -19,6 +19,7 @@
     </div>
 </div>
 
+@permission('trackings.read')
 <div class="row">
     <div class="col-12 mt-2">
         @include('layouts.shared.alert')
@@ -74,5 +75,6 @@
         </div>
     </div>
 </div>
+@endpermission
 
 @endsection

@@ -94,6 +94,14 @@
                             </a>
                         </li>
                         @endpermission
+                        @permission('users.read')
+                        <li class="nav-item">
+                            <a href="{{ route('admin.users.index') }}" class="nav-link">
+                                <i class="nav-icon fas fa-users"></i>
+                                <p>{{ __('Users') }}</p>
+                            </a>
+                        </li>
+                        @endpermission
                         @permission('profile.read')
                         <li class="nav-item">
                             <a href="{{ route('profile.index') }}" class="nav-link">
