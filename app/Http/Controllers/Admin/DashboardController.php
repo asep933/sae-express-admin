@@ -92,10 +92,9 @@ class DashboardController extends Controller
     {
         $shipment = Shipment::where('created_at', 'LIKE', "%$month%");
         $userID = auth()->id();
-        $shipmentUserID = Shipment::where('user_id', 'LIKE', "%$userID%")->pluck('user_id');
 
         $tableConfigs = $shipment
-            ->whereIn('user_id', $shipmentUserID)
+            ->where('user_id', $userID)
             ->orderByDesc('created_at')
             ->simplePaginate();
 

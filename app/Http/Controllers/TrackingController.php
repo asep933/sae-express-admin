@@ -72,7 +72,7 @@ class TrackingController extends Controller
                     {{ $row->receiver->name }}
                 ', ['row' => $row]);
                 })
-                ->rawColumns(['actions', 'updated_at', 'location'])
+                ->rawColumns(['actions', 'updated_at', 'location', 'user_id'])
                 ->make(true);
         }
 
