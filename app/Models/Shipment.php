@@ -11,6 +11,7 @@ class Shipment extends Model
 
     protected $fillable = [
         'package_description',
+        'user_id',
         'tracking_id',
         'sender_id',
         'receiver_id',
@@ -23,6 +24,11 @@ class Shipment extends Model
     ];
 
     protected $with = ['tracking', 'sender', 'receiver'];
+
+    public function user()
+    {
+        return $this->belongsTo(user::class, 'user_id', 'id');
+    }
 
     public function tracking()
     {

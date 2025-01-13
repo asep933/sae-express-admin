@@ -19,7 +19,7 @@
     </div>
 </div>
 
-@permission('trackings.read')
+@permission('dashboard.read')
 <div class="row">
     <div class="col-12 mt-2">
         @include('layouts.shared.alert')
@@ -35,8 +35,14 @@
             </div>
             <div class="card-body">
 
+                <form class="mb-3" action="{{ route('export.dashboard') }}" method="GET">
+                    <input type="hidden" name="created_at" value="{{ request('created_at') }}">
+                    <button type="submit" class="btn btn-sm btn-success">
+                        <i class="fas fa-file-excel"></i> Export to Excel
+                    </button>
+                </form>
+
                 <div id="dataTable_length" class="mb-3">
-                    <label for="filter-created-at">Filter:</label>
                     <form action="{{route('filter.process')}}" method="post">
                         @csrf
                         <select id="filter-created-at" name="created_at" class="form-control form-control-sm" style="width: auto; display: inline-block;">

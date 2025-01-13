@@ -10,10 +10,13 @@ return new class extends Migration
     {
         Schema::create('trackings', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->string('awb_number')->unique();
             $table->string('status')->nullable();
             $table->text('location')->nullable();
             $table->timestamps();
+
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
 
         Schema::create('senders', function (Blueprint $table) {
@@ -47,6 +50,7 @@ return new class extends Migration
 
         Schema::create('shipments', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('tracking_id');
             $table->unsignedBigInteger('sender_id');
             $table->unsignedBigInteger('receiver_id');
@@ -59,6 +63,7 @@ return new class extends Migration
             $table->float('length');
             $table->timestamps();
 
+            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('tracking_id')->references('id')->on('trackings')->onDelete('cascade');
             $table->foreign('sender_id')->references('id')->on('senders')->onDelete('cascade');
             $table->foreign('receiver_id')->references('id')->on('receivers')->onDelete('cascade');

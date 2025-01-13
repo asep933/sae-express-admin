@@ -27,8 +27,32 @@
             <div class="card-header">
                 <h3 class="card-title">Shipments AWB Lists</h3>
             </div>
+
             <div class="card-body">
+                <form class="mb-3" action="{{ route('export.tracking') }}" method="GET">
+                    <input type="hidden" name="created_at" value="{{ request('created_at') }}">
+                    <button type="submit" class="btn btn-sm btn-success">
+                        <i class="fas fa-file-excel"></i> Export to Excel
+                    </button>
+                </form>
+
                 <div class="table-responsive">
+
+                    <div id="dataTable_length" class="mb-3">
+                        <form method="POST" action="{{route('filter.process-tracking')}}">
+                            @csrf
+                            <select id="filter-created-at" name="created_at" class="form-control form-control-sm" style="width: auto; display: inline-block;">
+                                <option value="">All</option>
+                                @foreach($uniqueMonths as $month)
+                                <option value="{{ $month }}">
+                                    {{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }}
+                                </option>
+                                @endforeach
+                            </select>
+                            <button type="submit" class="btn btn-sm btn-default">Filter</button>
+                        </form>
+                    </div>
+
                     <table id="datatables" data-route="{{ route('admin.tracking.index') }}"
                         data-configs="{{ json_encode($tableConfigs) }}" class="table table-bordered table-sm">
                         <thead>

@@ -34,6 +34,14 @@ Route::group(['middleware' => ['auth']], function () {
     Route::get('/filter-index/{month}', [DashboardController::class, 'filterIndex'])->name('filter.index');
     Route::post('/filter-process', [DashboardController::class, 'filterProcess'])->name('filter.process');
 
+    Route::get('/filter-index-tracking/{month}', [TrackingController::class, 'filterIndex'])->name('filter.index-tracking');
+    Route::post('/filter-process-tracking', [TrackingController::class, 'filterProcess'])->name('filter.process-tracking');
+
+    Route::get('/export-dashboard', [DashboardController::class, 'export'])->name('export.dashboard');
+    Route::get('/export-dashboard-filter', [DashboardController::class, 'exportFilter'])->name('export.dashboard-filter');
+    Route::get('/export-shipments', [TrackingController::class, 'export'])->name('export.tracking');
+    Route::get('/export-shipments-filter', [TrackingController::class, 'exportFilter'])->name('export.tracking-filter');
+
     Route::get('/profile', [ProfileController::class, 'index'])->name('profile.index');
     Route::get('/profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::put('/profile/edit', [ProfileController::class, 'update'])->name('profile.update');

@@ -11,6 +11,9 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Blade;
+use Illuminate\Support\Facades\DB;
+use App\Exports\ShipmentExport;
+use App\Exports\ShipmentFilterExport;
 
 class TrackingController extends Controller
 {
@@ -21,9 +24,19 @@ class TrackingController extends Controller
     {
         validate_permission('trackings.read');
 
+        $driver = DB::getDriverName();
+        $dateFormat = $driver === 'sqlite'
+            ? "strftime('%Y-%m', created_at)" // SQLite format
+            : "DATE_FORMAT(created_at, '%Y-%m')"; // MySQL format
+
+        $uniqueMonths = Tracking::select(DB::raw("$dateFormat as month"))
+            ->groupBy('month')
+            ->orderBy('month', 'desc')
+            ->pluck('month');
+
         if ($request->ajax()) {
-            $rows = Tracking::offset($request->start)->limit($request->length);
-            $totalRecords = Tracking::count();
+            $rows = Tracking::with(['shipment', 'receiver'])->offset($request->start)->limit($request->length);
+            $totalRecords = Tracking::with(['shipment', 'receiver'])->count();
 
             return DataTables::of($rows)
                 ->setTotalRecords($totalRecords)
@@ -49,19 +62,52 @@ class TrackingController extends Controller
                         {{ $row->updated_at->format(\'M d, Y\') }}
                     ', ['row' => $row]);
                 })
-                ->rawColumns(['actions', 'updated_at', 'shipment_id', 'location'])
+                ->addColumn('created_at', function ($row) {
+                    return Blade::render('
+                        {{ $row->shipment->package_description }}
+                    ', ['row' => $row]);
+                })
+                ->addColumn('location', function ($row) {
+                    return Blade::render('
+                    {{ $row->receiver->name }}
+                ', ['row' => $row]);
+                })
+                ->rawColumns(['actions', 'updated_at', 'location'])
                 ->make(true);
         }
 
         $tableConfigs = (new DataTablesColumnsBuilder(Tracking::class))
             ->setSearchable('awb_number')
             ->setOrderable('awb_number')
-            ->setName('updated_at', 'Updated at')
-            ->removeColumns(['created_at', 'shipment_id', 'location'])
+            ->setName('created_at', 'Package Description')
+            ->setName('location', 'Receiver')
+            ->removeColumns(['user_id'])
             ->withActions()
             ->make();
 
-        return view('admin.tracking.index', compact('tableConfigs'));
+        return view('admin.tracking.index', compact('tableConfigs', 'uniqueMonths'));
+    }
+
+    public function filterIndex(Request $request, string $month)
+    {
+        $shipment = Tracking::where('created_at', 'LIKE', "%$month%");
+
+        $tableConfigs = $shipment
+            ->orderByDesc('created_at')
+            ->simplePaginate();
+
+        return view('admin.filter.filter-tracking', compact('tableConfigs', 'month'));
+    }
+
+    public function filterProcess()
+    {
+        $request = request()->validate([
+            'created_at' => 'required'
+        ]);
+
+        $month = $request['created_at'];
+
+        return redirect()->route('filter.index-tracking', $month);
     }
 
     /**
@@ -126,5 +172,17 @@ class TrackingController extends Controller
         }
 
         return redirect()->route('tracking.index')->with('error', 'Nomor resi tidak ditemukan.');
+    }
+
+    public function export()
+    {
+        return new ShipmentExport();
+    }
+
+    public function exportFilter()
+    {
+        $month = request('created_at');
+
+        return new ShipmentFilterExport($month);
     }
 }

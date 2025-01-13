@@ -10,6 +10,8 @@ use Yajra\DataTables\DataTables;
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\Facades\DB;
 use App\Helpers\DataTablesColumnsBuilder;
+use App\Exports\DashboardExport;
+use App\Exports\DashboardFilterExport;
 
 class DashboardController extends Controller
 {
@@ -24,18 +26,22 @@ class DashboardController extends Controller
             ? "strftime('%Y-%m', created_at)" // SQLite format
             : "DATE_FORMAT(created_at, '%Y-%m')"; // MySQL format
 
-
         $uniqueMonths = Tracking::select(DB::raw("$dateFormat as month"))
             ->groupBy('month')
             ->orderBy('month', 'desc')
             ->pluck('month');
 
 
+        $model = Tracking::query();
+
         if ($request->ajax()) {
-            $rows = Tracking::with(['shipment', 'receiver'])->offset($request->start)->limit($request->length);
-            $totalRecords = Tracking::with(['shipment', 'receiver'])->count();
+            $rows = $model->with(['shipment', 'receiver'])->offset($request->start)->limit($request->length);
+            $totalRecords = $model->with(['shipment', 'receiver'])->count();
 
             return DataTables::of($rows)
+                ->filter(function ($query) {
+                    $query->where('user_id', auth()->id());
+                }, true)
                 ->setTotalRecords($totalRecords)
                 ->setFilteredRecords($totalRecords)
                 ->addColumn('actions', function ($row) {
@@ -43,6 +49,9 @@ class DashboardController extends Controller
                     <div class="btn-group">
                         <div>
                             <a href="{{ route(\'admin.label.edit\', $row) }}" class="btn btn-default">Print Label</a>
+                        </div>
+                        <div>
+                            <a href="{{ route(\'admin.shipment.edit\', $row) }}" class="btn btn-primary text-white">Edit</a>
                         </div>
                     </div>
                 ', ['row' => $row->id]);
@@ -62,7 +71,7 @@ class DashboardController extends Controller
                     {{ $row->shipment->package_description }}
                 ', ['row' => $row]);
                 })
-                ->rawColumns(['actions', 'created_at', 'location'])
+                ->rawColumns(['actions', 'created_at', 'location', 'user_id'])
                 ->make(true);
         }
 
@@ -72,6 +81,7 @@ class DashboardController extends Controller
             ->setName('created_at', 'Created at')
             ->setName('location', 'Receiver')
             ->setName('updated_at', 'Package description')
+            ->removeColumns(['user_id'])
             ->withActions()
             ->make();
 
@@ -80,7 +90,12 @@ class DashboardController extends Controller
 
     public function filterIndex(Request $request, string $month)
     {
-        $tableConfigs = Shipment::where('created_at', 'LIKE', "%$month%")
+        $shipment = Shipment::where('created_at', 'LIKE', "%$month%");
+        $userID = auth()->id();
+        $shipmentUserID = Shipment::where('user_id', 'LIKE', "%$userID%")->pluck('user_id');
+
+        $tableConfigs = $shipment
+            ->whereIn('user_id', $shipmentUserID)
             ->orderByDesc('created_at')
             ->simplePaginate();
 
@@ -96,5 +111,17 @@ class DashboardController extends Controller
         $month = $request['created_at'];
 
         return redirect()->route('filter.index', $month);
+    }
+
+    public function export()
+    {
+        return new DashboardExport();
+    }
+
+    public function exportFilter()
+    {
+        $month = request('created_at');
+
+        return new DashboardFilterExport($month);
     }
 }

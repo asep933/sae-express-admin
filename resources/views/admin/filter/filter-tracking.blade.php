@@ -12,7 +12,7 @@
 <div class="row">
     <div class="col-12">
         <div class="card mt-3">
-            <form class="m-3" action="{{ route('export.dashboard-filter') }}" method="GET">
+            <form class="m-3" action="{{ route('export.tracking-filter') }}" method="GET">
                 <input type="hidden" name="created_at" value="{{ $month }}">
                 <button type="submit" class="btn btn-sm btn-success">
                     <i class="fas fa-file-excel"></i> Export to Excel
@@ -23,7 +23,7 @@
                 <h3 class="card-title">
                     Filter Table:
                     <span class="d-inline-flex align-items-center ms-3 bg-light rounded-pill px-3 py-1 shadow-sm">
-                        <form action="{{route('admin.dashboard.index')}}" class="d-flex align-items-center gap-2 mb-0">
+                        <form action="{{route('admin.tracking.index')}}" class="d-flex align-items-center gap-2 mb-0">
                             <span class="text-dark fw-medium">
                                 {{ \Carbon\Carbon::createFromFormat('Y-m', $month)->format('F Y') }}
                             </span>
@@ -49,10 +49,10 @@
                         <tbody>
                             @foreach ($tableConfigs as $row)
                             <tr>
-                                <td>{{$row->tracking->awb_number}}</td>
-                                <td>{{$row->tracking->status}}</td>
+                                <td>{{$row->awb_number}}</td>
+                                <td>{{$row->status}}</td>
                                 <td>{{$row->receiver->name}}</td>
-                                <td>{{$row->package_description}}</td>
+                                <td>{{$row->shipment->package_description}}</td>
                                 <td>{{$row->created_at->format('M d, Y')}}</td>
                             </tr>
                             @endforeach

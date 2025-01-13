@@ -14,7 +14,9 @@ class RolePermissionSeeder extends Seeder
      */
     public function run(): void
     {
+        $shipmentUpdateID = Permission::where('name', 'shipment.update')->value('id');
+
         $roleAgen = Role::find(2);
-        $roleAgen->permissions()->sync([1, 2, 21, 22, 23]);
+        $roleAgen->permissions()->sync([1, 2, 21, 22, 23, $shipmentUpdateID]);
     }
 }

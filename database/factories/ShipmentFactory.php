@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\User;
 use App\Models\Shipment;
 use App\Models\Tracking;
 use App\Models\Sender;
@@ -14,12 +15,14 @@ class ShipmentFactory extends Factory
 
     public function definition()
     {
+        $user = User::factory()->create();
         $tracking = Tracking::factory()->create();
         $sender = Sender::factory()->create(['tracking_id' => $tracking->id]);
         $receiver = Receiver::factory()->create(['tracking_id' => $tracking->id]);
 
         return [
             'package_description' => $this->faker->sentence(),
+            'user_id' => $user->id,
             'tracking_id' => $tracking->id,
             'sender_id' => $sender->id,
             'receiver_id' => $receiver->id,

@@ -15,7 +15,7 @@
 <body class="hold-transition sidebar-mini">
     <div class="wrapper">
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
-            <!-- Left navbar links -->
+            {{-- Left navbar links --}}
             <ul class="navbar-nav">
                 <li class="nav-item">
                     <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i
@@ -28,7 +28,7 @@
                 @endpermission
             </ul>
             <ul class="navbar-nav ml-auto">
-                <!-- Navbar Search -->
+                {{-- Navbar Search --}}
                 <li class="nav-item">
                     <a class="nav-link" data-widget="navbar-search" href="#" role="button">
                         <i class="fas fa-search"></i>

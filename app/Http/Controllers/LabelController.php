@@ -328,8 +328,6 @@ class LabelController extends Controller
                             Dusun Wanguk Lor Timur, RT 020 RW 009 <br />
                             Desa.Kadungwungu, Kec.Anjatan, Kab.Indramayu<br />
                             Prov. Jawa Barat - Indonesia 45256<br />
-                            Contact Person: 0822-1113-6336 <br />
-                            0821-2016-0733
                         </p>
                     </div>
                 </header>
