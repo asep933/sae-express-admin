@@ -8,6 +8,7 @@
     <link rel="stylesheet"
         href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
     @vite(['resources/css/app.css'])
+    @stack('styles')
 </head>
 
 <body class="hold-transition login-page">
@@ -23,6 +24,7 @@
     </div>
 
     @vite(['resources/js/app.js'])
+    @stack('scripts')
 </body>
 
 </html>

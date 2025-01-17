@@ -25,6 +25,26 @@
             <div class="input-group-text">
                 <span class="fas fa-eye" id="togglePassword" style="cursor: pointer;"></span>
             </div>
+            @push('scripts')
+            <script>
+                document
+                    .getElementById("togglePassword")
+                    .addEventListener("click", function() {
+                        const passwordInput = document.getElementById("password");
+                        const icon = this;
+
+                        if (passwordInput.type === "password") {
+                            passwordInput.type = "text";
+                            icon.classList.remove("fa-eye");
+                            icon.classList.add("fa-eye-slash");
+                        } else {
+                            passwordInput.type = "password";
+                            icon.classList.remove("fa-eye-slash");
+                            icon.classList.add("fa-eye");
+                        }
+                    });
+            </script>
+            @endpush
         </div>
         @error('password')
         <span class="error invalid-feedback" role="alert">{{ $message }}</span>

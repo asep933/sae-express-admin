@@ -1,14 +1,14 @@
-@extends('layouts.tracking')
+@extends('layouts.homepage')
 
-@section('title', 'Tracking Pengiriman')
+@section('title', 'Lacak Pengiriman')
 
 @section('main')
-<div class="row">
-    <div class="col-md-6 offset-md-3">
-        <!-- Form Cek Resi -->
-        <div class="card">
+<div class="tracking">
+    <div id="cek-resi" class="container col-md-6 offset-md-3">
+        {{-- Form Cek Resi --}}
+        <div class="card" style="max-width: 720px; margin-left: auto; margin-right: auto;">
             <div class="card-header">
-                <h3 class="card-title"><i class="fas fa-search"></i> Cek Resi</h3>
+                <h3 class="card-title"><i class="fas fa-search"></i> Lacak Pengiriman</h3>
             </div>
             <div class="card-body">
                 <form action="{{ route('tracking.search') }}" method="GET">
@@ -34,6 +34,12 @@
             </div>
         </div>
 
+    </div>
+</div>
+</div>
+
+<section>
+    <div class="col-md-6 offset-md-3">
         @if(isset($tracking))
         <div class="card mt-4">
             <div class="card-header bg-success text-white">
@@ -94,7 +100,7 @@
                 </div>
             </div>
             @endif
-
         </div>
-    </div>
-    @stop
+</section>
+
+@endsection

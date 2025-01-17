@@ -11,8 +11,8 @@ use App\Http\Controllers\LabelController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
-    return redirect('/tracking');
-});
+    return view('homepage');
+})->name('homepage');
 
 Route::get('/admin', function () {
     return redirect()->route('admin.dashboard.index');
@@ -49,7 +49,7 @@ Route::group(['middleware' => ['auth']], function () {
 
 Route::get('/tracking', function () {
     return view('tracking.index');
-});
+})->name('tracking');
 Route::get('/tracking-search', [TrackingController::class, 'search'])->name('tracking.search');
 
 

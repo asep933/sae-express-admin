@@ -22,8 +22,8 @@
                             class="fas fa-bars"></i></a>
                 </li>
                 @permission('dashboard.read')
-                <li class="nav-item d-none d-sm-inline-block">
-                    <a href="{{ route('admin.dashboard.index') }}" class="nav-link">{{ __('Dashboard') }}</a>
+                <li class="nav-item d-sm-inline-block">
+                    <a href="/" class="nav-link">{{ __('Homepage') }}</a>
                 </li>
                 @endpermission
             </ul>

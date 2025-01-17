@@ -289,7 +289,7 @@ class TemplateHTML
                         <div class="sender">
                             <h2>PENGIRIM (From/Shipper)</h2>
                             <div>
-                                <pre>Name          :   <span><?= $invoiceData['origin']['name'] ?></span></pre>
+                                <pre>Nama          :   <span><?= $invoiceData['origin']['name'] ?></span></pre>
                                 <small>(Name)</small>
                             </div>
                             <div class="adress">
@@ -313,7 +313,7 @@ class TemplateHTML
                         <div class="receiver">
                             <h2>PENERIMA (To/Receiver)</h2>
                             <div>
-                                <pre>Name          :   <span><?= $invoiceData['destination']['name'] ?></span></pre>
+                                <pre>Nama          :   <span><?= $invoiceData['destination']['name'] ?></span></pre>
                                 <small>(Name)</small>
                             </div>
                             <div class="adress">
