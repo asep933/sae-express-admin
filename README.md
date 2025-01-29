@@ -1,79 +1,56 @@
-[![Contributors][contributors-shield]][contributors-url]
-[![Forks][forks-shield]][forks-url]
-[![Stargazers][stars-shield]][stars-url]
-[![Issues][issues-shield]][issues-url]
-[![MIT License][license-shield]][license-url]
+# SAE Express
 
-<br />
-<div align="center">
-  <a href="javascript:void(0);">
-    <img src="https://i.ibb.co/wgWwMK9/Screen-Shot-2022-03-18-at-12-41-43.png" alt="Logo" width="80" height="80">
-  </a>
+SAE Express is a web-based application developed using Laravel. This application is designed to provide expedition services with features for shipment management, package tracking, and user management.
 
-  <h3 align="center">Starter</h3>
+## Main Features
+- Shipment management
+- Real-time package tracking
+- User Multi authentication and authorization
+- Admin dashboard for data management
+- Third-party API integration (if needed)
 
-  <p align="center">
-    An simple admin dashboard starter with Laravel and AdminLTE.
-    <br />
-    <a href="https://github.com/aziyan99/laravel-adminlte-starter/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/aziyan99/laravel-adminlte-starter/issues">Request Feature</a>
-  </p>
-</div>
+## Installation
 
-## About The Project
+### System Requirements
+Make sure your system meets the following requirements:
+- PHP >= 8.0
+- Composer
+- MySQL
+- Node.js & NPM (if using additional frontend features)
 
-[![Product Name Screen Shot][product-screenshot]](http://localhost)
+### Installation Steps
+1. Clone the repository:
+   ```sh
+   git clone https://github.com/username/sae-express.git
+   cd sae-express
+   ```
+2. Install dependencies with Composer:
+   ```sh
+   composer install
+   ```
+3. Create the `.env` file from the template:
+   ```sh
+   cp .env.example .env
+   ```
+4. Configure the database in the `.env` file
+5. Generate the application key:
+   ```sh
+   php artisan key:generate
+   ```
+6. Run migrations and seed the database:
+   ```sh
+   php artisan migrate --seed
+   ```
+7. Start the local server:
+   ```sh
+   php artisan serve
+   ```
 
-This is a starter admin dashboard project built on top of Laravel and AdminLTE. The starter including Access Control Level based on permissions and roles.
+## Usage
+After installation is complete, the application can be accessed at `http://localhost:8000`. Use the account created during database seeding to log in as an admin or create a new account through the registration page.
 
-### Built With
-
-* [Laravel Framework](https://laravel.com/)
-* [AdminLTE](https://adminlte.io/)
-
-## Getting Started
-
-To make the starter run on your machine just following below instructions.
-
-### Prerequisites
-
-This is an example of how to list things you need to use the software and how to install them.
-* Clone the respository
-  ```sh
-    git clone https://github.com/aziyan99/laravel-adminlte-starter
-  ```
-* Compatible PHP version and configs for running Laravel 11.x
-* MySQL or MariaDB database
-* Configure .env file
-
-### Installation
-
-1. `npm run build` to build the assets
-2. `php artisan key:generate`
-4. `php artisan migrate:fresh`
-5. `php artisan db:seed`
-6. `php artisan serve` or another web server that able to run PHP based website
-
-### Authentication
-- URL `http://<domain-local>/login` or configurated URL.
-- Admin:
-    - Email: `admin@local.test` 
-    - Password: `password`
-
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-[contributors-shield]: https://img.shields.io/github/contributors/aziyan99/laravel-adminlte-starter.svg?style=for-the-badge
-[contributors-url]: https://github.com/aziyan99/laravel-adminlte-starter/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/aziyan99/laravel-adminlte-starter.svg?style=for-the-badge
-[forks-url]: https://github.com/aziyan99/laravel-adminlte-starter/network/members
-[stars-shield]: https://img.shields.io/github/stars/aziyan99/laravel-adminlte-starter.svg?style=for-the-badge
-[stars-url]: https://github.com/aziyan99/laravel-adminlte-starter/stargazers
-[issues-shield]: https://img.shields.io/github/issues/aziyan99/laravel-adminlte-starter.svg?style=for-the-badge
-[issues-url]: https://github.com/aziyan99/laravel-adminlte-starter/issues
-[license-shield]: https://img.shields.io/github/license/aziyan99/laravel-adminlte-starter.svg?style=for-the-badge
-[license-url]: https://github.com/aziyan99/laravel-adminlte-starter/blob/main/LICENCE.txt
-[product-screenshot]: https://i.ibb.co/q7KVQgT/screencapture-laravel-adminlte-starter-test-backend-settings-index-2022-03-18-12-45-47.png
-
+## Deployment
+Use a server that supports Laravel, such as Apache or Nginx. Some steps to take before deployment:
+- Run `php artisan config:cache` to improve performance
+- Ensure the `storage` and `bootstrap/cache` directories have the correct permissions
+- Use a supervisor or another system to run the queue worker (if there are features that use queues)
